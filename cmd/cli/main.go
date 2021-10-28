@@ -11,6 +11,7 @@ import (
 func main() {
 	token := flag.String("token", "", "")
 	chatId := flag.String("chat_id", "", "")
+	inputLang := flag.String("lang", "", "")
 	flag.Parse()
 
 	if *token == "" || *chatId == "" {
@@ -22,10 +23,15 @@ func main() {
 		log.Fatalf("error convert chat_id from env to int: %s", err.Error())
 	}
 
+	lang := *inputLang
+	if lang == "" {
+		lang = counter.DefaultLang
+	}
+
 	apiClient := counter.NewHTTPAPIClient(
 		*token,
 		counter.DefaultBaseUrl,
-		counter.DefaultLang,
+		lang,
 		counter.DefaultVersion,
 	)
 
