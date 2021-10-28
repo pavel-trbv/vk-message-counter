@@ -36,5 +36,14 @@ func main() {
 	fmt.Println(prettyStats)
 }
 ```
+## Result
+Something like this will be output to the console:
+```
+Total count - 398
+1) Some Person 1 - 85
+2) Some Person 2 - 48
+3) Some Person 3 - 30
+...
+```
 ## Thanks
 https://github.com/go-vk-api/vk
