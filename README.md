@@ -1,6 +1,11 @@
 # vk-message-counter
 Simple golang script for getting VK message statistics
-## Example
+## Usage
+Use from CLI
+```
+go run cmd/cli/main.go -token=sometoken -chat_id=123
+```
+Use from application (check [this](https://github.com/pavel-trbv/vk-message-counter/blob/master/cmd/app/main.go))
 ```go
 package main
 
