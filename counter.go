@@ -101,17 +101,17 @@ func (c *Counter) GetMessageStats(chatId int, logging bool) (MessageStats, error
 			break
 		}
 
+		totalCount = history.Count
 		for _, v := range history.Items {
 			counter[v.FromId] += 1
 		}
-
-		totalCount = history.Count
-		i += 1
 
 		if logging {
 			percent := float32(maxMessagesPerRequest*i) / float32(totalCount) * 100
 			fmt.Printf("\r%d%%", int(percent))
 		}
+
+		i += 1
 	}
 
 	counterWithNames := make(map[string]int)
@@ -147,25 +147,25 @@ func (c *Counter) GetMessageStats(chatId int, logging bool) (MessageStats, error
 }
 
 func (c *Counter) CallMethod(method string, params RequestParams, response interface{}) error {
-	values := url.Values{}
+	httpParams := url.Values{}
 
 	for k, v := range params {
-		values.Add(k, fmt.Sprint(v))
+		httpParams.Add(k, fmt.Sprint(v))
 	}
 
-	if !values.Has(tokenFieldName) {
-		values.Add(tokenFieldName, c.Token)
+	if !httpParams.Has(tokenFieldName) {
+		httpParams.Add(tokenFieldName, c.Token)
 	}
 
-	if !values.Has(versionFieldName) {
-		values.Add(versionFieldName, c.Version)
+	if !httpParams.Has(versionFieldName) {
+		httpParams.Add(versionFieldName, c.Version)
 	}
 
-	if !values.Has(langFieldName) {
-		values.Add(langFieldName, c.Lang)
+	if !httpParams.Has(langFieldName) {
+		httpParams.Add(langFieldName, c.Lang)
 	}
 
-	query := values.Encode()
+	query := httpParams.Encode()
 	reqUrl := fmt.Sprintf("%s/%s?%s", c.BaseURL, method, query)
 
 	resp, err := c.HTTPClient.Get(reqUrl)
