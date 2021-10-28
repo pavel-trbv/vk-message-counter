@@ -13,7 +13,7 @@ func main() {
 	chatId := flag.String("chat_id", "", "")
 	flag.Parse()
 
-	if token == nil || chatId == nil {
+	if *token == "" || *chatId == "" {
 		log.Fatal("empty arguments")
 	}
 
