@@ -22,12 +22,20 @@ func main() {
 		log.Fatalf("error convert chat_id from env to int: %s", err.Error())
 	}
 
-	client := counter.NewCounter(*token)
-	stats, err := client.GetMessageStats(chatIdInt, true)
+	apiClient := counter.NewHTTPAPIClient(
+		*token,
+		counter.DefaultBaseUrl,
+		counter.DefaultLang,
+		counter.DefaultVersion,
+	)
+
+	service := counter.NewService(apiClient, true)
+	stats, err := service.GetMessageStats(chatIdInt)
 	if err != nil {
 		log.Fatalf("error occured while getting message stats: %s", err.Error())
 	}
 
-	prettyStats := stats.Format()
-	fmt.Println(prettyStats)
+	var formatter counter.Formatter = counter.NewDefaultFormatter()
+	output := formatter.Format(stats)
+	fmt.Println(output)
 }

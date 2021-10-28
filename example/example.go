@@ -14,18 +14,19 @@ func main() {
 		log.Fatal("error load .env")
 	}
 
-	client := counter.NewCounter(os.Getenv("VK_TOKEN"))
-
+	token := os.Getenv("VK_TOKEN")
 	chatId, err := strconv.Atoi(os.Getenv("VK_CHAT_ID"))
 	if err != nil {
 		log.Fatalf("error convert chat_id from env to int: %s", err.Error())
 	}
 
-	stats, err := client.GetMessageStats(chatId, true)
+	counterService := counter.Default(token)
+	stats, err := counterService.GetMessageStats(chatId)
 	if err != nil {
 		log.Fatalf("error occured while getting message stats: %s", err.Error())
 	}
 
-	prettyStats := stats.Format()
-	fmt.Println(prettyStats)
+	formatter := counter.NewDefaultFormatter()
+	output := formatter.Format(stats)
+	fmt.Println(output)
 }
