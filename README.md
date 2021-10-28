@@ -1,46 +1,11 @@
 # vk-message-counter
 Simple golang script for getting VK message statistics
-## Usage
+## Usage from CLI
 Use from CLI
 ```
-go run cmd/cli/main.go -token=sometoken -chat_id=123
+go run cmd/cli/main.go -token=<string> -chat_id=<number> [-lang=<string>]
 ```
-Use from application (check [this](https://github.com/pavel-trbv/vk-message-counter/blob/master/cmd/app/main.go))
-```go
-package main
-
-import (
-	"fmt"
-	"github.com/joho/godotenv"
-	counter "github.com/pavel-trbv/vk-message-counter"
-	"log"
-	"os"
-	"strconv"
-)
-
-func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("error load .env")
-	}
-
-	client := counter.NewCounter(os.Getenv("VK_TOKEN"))
-
-	chatId, err := strconv.Atoi(os.Getenv("VK_CHAT_ID"))
-	if err != nil {
-		log.Fatalf("error convert chat_id from env to int: %s", err.Error())
-	}
-
-	stats, err := client.GetMessageStats(chatId, true)
-	if err != nil {
-		log.Fatalf("error occured while getting message stats: %s", err.Error())
-	}
-
-	prettyStats := stats.Format()
-	fmt.Println(prettyStats)
-}
-```
-## Result
-Something like this will be output to the console:
+Something like this will be output:
 ```
 Total count - 398
 1) Some Person 1 - 85
@@ -48,5 +13,7 @@ Total count - 398
 3) Some Person 3 - 30
 ...
 ```
+## Usage from application
+Example use from application is [here](https://github.com/pavel-trbv/vk-message-counter/blob/master/example/example.go)
 ## Thanks
 https://github.com/go-vk-api/vk
