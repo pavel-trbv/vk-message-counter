@@ -16,7 +16,6 @@ import (
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("error load .env")
-		return
 	}
 
 	client := counter.NewCounter(os.Getenv("VK_TOKEN"))
@@ -29,7 +28,6 @@ func main() {
 	stats, err := client.GetMessageStats(chatId, true)
 	if err != nil {
 		log.Fatalf("error occured while getting message stats: %s", err.Error())
-		return
 	}
 
 	prettyStats := stats.Format()
