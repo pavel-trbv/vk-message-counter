@@ -24,7 +24,7 @@ func main() {
 
 	stats, err := client.GetMessageStats(chatId, true)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatalf("error occured while getting message stats: %s", err.Error())
 		return
 	}
 
