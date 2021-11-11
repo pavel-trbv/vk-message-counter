@@ -31,11 +31,11 @@ type chatUser struct {
 	Type      string `json:"type"`
 }
 
-type chatResponse struct {
+type ChatResponse struct {
 	Users []chatUser `json:"users"`
 }
 
-type historyResponse struct {
+type HistoryResponse struct {
 	Count int `json:"count"`
 	Items []struct {
 		FromId int `json:"from_id"`
@@ -43,9 +43,9 @@ type historyResponse struct {
 }
 
 type APIClient interface {
-	callMethod(method string, params requestParams, response interface{}) error
-	getChat(chatId int) (chatResponse, error)
-	getHistory(chatId, count, offset int) (historyResponse, error)
+	CallMethod(method string, params requestParams, response interface{}) error
+	GetChat(chatId int) (ChatResponse, error)
+	GetHistory(chatId, count, offset int) (HistoryResponse, error)
 }
 
 type HTTPAPIClient struct {
@@ -58,19 +58,18 @@ type HTTPAPIClient struct {
 }
 
 func NewHTTPAPIClient(token string, baseURL string, lang string, version string) *HTTPAPIClient {
-	httpClient := http.DefaultClient
 	return &HTTPAPIClient{
 		BaseURL:    baseURL,
 		Lang:       lang,
 		Version:    version,
 		Token:      token,
-		HTTPClient: httpClient,
+		HTTPClient: http.DefaultClient,
 	}
 }
 
-func (c *HTTPAPIClient) getChat(chatId int) (chatResponse, error) {
-	var chat chatResponse
-	err := c.callMethod("messages.getChat", requestParams{
+func (c *HTTPAPIClient) GetChat(chatId int) (ChatResponse, error) {
+	var chat ChatResponse
+	err := c.CallMethod("messages.getChat", requestParams{
 		"chat_id": chatId,
 		"fields":  "first_name,last_name",
 	}, &chat)
@@ -78,9 +77,9 @@ func (c *HTTPAPIClient) getChat(chatId int) (chatResponse, error) {
 	return chat, err
 }
 
-func (c *HTTPAPIClient) getHistory(chatId, count, offset int) (historyResponse, error) {
-	var history historyResponse
-	err := c.callMethod("messages.getHistory", requestParams{
+func (c *HTTPAPIClient) GetHistory(chatId, count, offset int) (HistoryResponse, error) {
+	var history HistoryResponse
+	err := c.CallMethod("messages.getHistory", requestParams{
 		"chat_id": chatId,
 		"count":   count,
 		"offset":  offset,
@@ -89,7 +88,7 @@ func (c *HTTPAPIClient) getHistory(chatId, count, offset int) (historyResponse, 
 	return history, err
 }
 
-func (c *HTTPAPIClient) callMethod(method string, params requestParams, response interface{}) error {
+func (c *HTTPAPIClient) CallMethod(method string, params requestParams, response interface{}) error {
 	httpParams := url.Values{}
 
 	for k, v := range params {

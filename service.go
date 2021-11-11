@@ -22,7 +22,7 @@ func NewService(APIClient APIClient, Logging bool) *Service {
 }
 
 func (s *Service) GetMessageStats(chatId int) (MessageStats, error) {
-	chat, err := s.APIClient.getChat(chatId)
+	chat, err := s.APIClient.GetChat(chatId)
 	if err != nil {
 		return MessageStats{}, err
 	}
@@ -32,7 +32,7 @@ func (s *Service) GetMessageStats(chatId int) (MessageStats, error) {
 
 	i := 0
 	for {
-		history, err := s.APIClient.getHistory(chatId, maxMessagesPerRequest, maxMessagesPerRequest*i)
+		history, err := s.APIClient.GetHistory(chatId, maxMessagesPerRequest, maxMessagesPerRequest*i)
 		if err != nil {
 			return MessageStats{}, err
 		}
