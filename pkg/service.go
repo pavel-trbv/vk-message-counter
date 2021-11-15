@@ -1,6 +1,8 @@
-package counter
+package pkg
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Service struct {
 	Logging   bool

@@ -1,4 +1,4 @@
-package counter
+package pkg
 
 func Default(token string) *Service {
 	apiClient := NewHTTPAPIClient(token, DefaultBaseUrl, DefaultLang, DefaultVersion)

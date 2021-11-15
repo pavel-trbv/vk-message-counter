@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/joho/godotenv"
-	counter "github.com/pavel-trbv/vk-message-counter"
+	"github.com/pavel-trbv/vk-message-counter/pkg"
 	"log"
 	"os"
 	"strconv"
@@ -20,13 +20,13 @@ func main() {
 		log.Fatalf("error convert chat_id from env to int: %s", err.Error())
 	}
 
-	counterService := counter.Default(token)
+	counterService := pkg.Default(token)
 	stats, err := counterService.GetMessageStats(chatId)
 	if err != nil {
 		log.Fatalf("error occured while getting message stats: %s", err.Error())
 	}
 
-	formatter := counter.NewDefaultFormatter()
+	formatter := pkg.NewDefaultFormatter()
 	output := formatter.FormatText(stats)
 	fmt.Println(output)
 }

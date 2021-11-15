@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	counter "github.com/pavel-trbv/vk-message-counter"
+	"github.com/pavel-trbv/vk-message-counter/pkg"
 	"log"
 	"strconv"
 )
@@ -25,22 +25,22 @@ func main() {
 
 	lang := *inputLang
 	if lang == "" {
-		lang = counter.DefaultLang
+		lang = pkg.DefaultLang
 	}
 
-	apiClient := counter.NewHTTPAPIClient(
+	apiClient := pkg.NewHTTPAPIClient(
 		*token,
-		counter.DefaultBaseUrl,
+		pkg.DefaultBaseUrl,
 		lang,
-		counter.DefaultVersion,
+		pkg.DefaultVersion,
 	)
 
-	service := counter.NewService(apiClient, true)
+	service := pkg.NewService(apiClient, true)
 	stats, err := service.GetMessageStats(chatIdInt)
 	if err != nil {
 		log.Fatalf("error occured while getting message stats: %s", err.Error())
 	}
 
-	var formatter counter.Formatter = counter.NewDefaultFormatter()
+	var formatter pkg.Formatter = pkg.NewDefaultFormatter()
 	fmt.Println(formatter.FormatText(stats))
 }

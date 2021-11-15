@@ -1,0 +1,28 @@
+{
+  "name": "vk-message-counter-frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev ./resources",
+    "build": "next build ./resources",
+    "start": "next start ./resources",
+    "lint": "next lint ./resources",
+    "export": "next build ./resources && next export ./resources"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.6.10",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "axios": "^0.24.0",
+    "framer-motion": "^4.1.17",
+    "next": "12.0.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "16.11.6",
+    "@types/react": "17.0.33",
+    "eslint": "7",
+    "eslint-config-next": "12.0.2",
+    "typescript": "4.4.4"
+  }
+}

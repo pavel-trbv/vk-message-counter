@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
-	counter "github.com/pavel-trbv/vk-message-counter"
+	"github.com/pavel-trbv/vk-message-counter/pkg"
 	"log"
 	"net/http"
 	"os"
@@ -16,6 +16,12 @@ func main() {
 		log.Fatal("error load .env")
 	}
 
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			return
+		}
+	})
 	http.HandleFunc("/stats", handler)
 
 	port := os.Getenv("HTTP_PORT")
@@ -45,6 +51,11 @@ func responseMessage(w http.ResponseWriter, statusCode int, message string) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	if r.Method == "OPTIONS" {
+		return
+	}
+
 	token := r.URL.Query().Get("token")
 	chatId := r.URL.Query().Get("chat_id")
 	inputLang := r.URL.Query().Get("lang")
@@ -62,17 +73,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	lang := inputLang
 	if lang == "" {
-		lang = counter.DefaultLang
+		lang = pkg.DefaultLang
 	}
 
-	apiClient := counter.NewHTTPAPIClient(
+	apiClient := pkg.NewHTTPAPIClient(
 		token,
-		counter.DefaultBaseUrl,
+		pkg.DefaultBaseUrl,
 		lang,
-		counter.DefaultVersion,
+		pkg.DefaultVersion,
 	)
 
-	service := counter.NewService(apiClient, false)
+	service := pkg.NewService(apiClient, false)
 	stats, err := service.GetMessageStats(chatIdInt)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -80,7 +91,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	formatter := counter.NewDefaultFormatter()
+	formatter := pkg.NewDefaultFormatter()
 	statsJson := formatter.FormatJson(stats)
 	if err != nil {
 		responseMessage(w, http.StatusInternalServerError, err.Error())
@@ -89,4 +100,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(statsJson))
+}
+
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }

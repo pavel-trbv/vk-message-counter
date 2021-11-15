@@ -1,4 +1,4 @@
-package counter
+package pkg
 
 type MethodError struct {
 	Code          int64         `json:"error_code"`

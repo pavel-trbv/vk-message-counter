@@ -1,4 +1,4 @@
-package counter
+package pkg
 
 import (
 	"encoding/json"
