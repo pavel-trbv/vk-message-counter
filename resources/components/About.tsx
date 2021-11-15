@@ -10,9 +10,7 @@ const About: FC = () => {
                 <Link href="https://vk.com" color="blue.500">vk.com</Link> social network.
                 <br/>
                 <br/>
-                It was created using the Next.js framework and Chakra UI library. The source code is in this&nbsp;
-                <Link href="https://github.com/pavel-trbv/vk-message-counter-frontend"
-                      color="blue.500">vk-message-counter-frontend</Link> repository.
+                It was created using the Next.js framework and Chakra UI library.
                 <br/>
                 <br/>
                 The server side of this application is written in Golang in the form of HTTP API. Counting the number of
