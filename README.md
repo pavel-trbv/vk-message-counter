@@ -1,5 +1,11 @@
 # vk-message-counter
 Simple golang script for getting VK message statistics
+## Run as web application
+```
+npm install
+npm run dev
+```
+Open http://localhost:3000 in your browser
 ## Usage from CLI
 Use from CLI
 ```
