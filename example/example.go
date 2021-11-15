@@ -27,6 +27,6 @@ func main() {
 	}
 
 	formatter := counter.NewDefaultFormatter()
-	output := formatter.Format(stats)
+	output := formatter.FormatText(stats)
 	fmt.Println(output)
 }
